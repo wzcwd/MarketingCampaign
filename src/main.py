@@ -1,6 +1,7 @@
-from sklearn.metrics import accuracy_score
+#from sklearn.metrics import accuracy_score
 from preprocess import load_data, make_preprocessor, split_train_test
 from train_models import train_models
+from test_performance import evaluate_models
 
 
 
@@ -21,14 +22,17 @@ def main() -> None:
     # print("Test  shape:", X_test.shape, y_test.shape) # Test  shape: (448, 28) (448,)
 
     # 4) Train models
-    print("\n=== Test-set performance ===")
-    trained_models = train_models(preprocessor, X_train, y_train)
+    trained = train_models(preprocessor, X_train, y_train)
+    # for model_name, estimator in trained.items():
+    #     y_pred = estimator.predict(X_test)
+    #     acc = accuracy_score(y_test, y_pred)
+    #     print(f"{model_name:15s}  Accuracy: {acc:.4f}")
 
-    # 5) Test models
-    for model_name, estimator in trained_models.items():
-        y_pred = estimator.predict(X_test)
-        acc = accuracy_score(y_test, y_pred)
-        print(f"{model_name:15s}  Accuracy: {acc:.4f}")
+    # 5) Evaluate on test set
+    results_df, _ = evaluate_models(trained, X_test, y_test)
+
+    print("Performance summary for test set\n")
+    print(results_df.to_string(col_space=12, float_format="{:.3f}".format))
 
 
 if __name__ == "__main__":
