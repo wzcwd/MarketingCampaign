@@ -2,11 +2,13 @@
 from preprocess import load_data, make_preprocessor, split_train_test
 from train_models import train_models
 from test_performance import evaluate_models
+from feature_importance import feature_importance
 
 
 
 DATA_PATH = "../data/marketing_campaign.csv"
 TARGET_COL = "Response"
+result_dir = "../results"
 
 def main() -> None:
     # 1) Load dataset
@@ -33,6 +35,10 @@ def main() -> None:
 
     print("Performance summary for test set\n")
     print(results_df.to_string(col_space=12, float_format="{:.3f}".format))
+
+    # 6) Plot feature importance (for models that support it)
+    feature_importance(trained, preprocessor, result_dir)
+    print("\nFeature-importance plots saved")
 
 
 if __name__ == "__main__":
