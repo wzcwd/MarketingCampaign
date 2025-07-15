@@ -5,7 +5,7 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.pipeline import Pipeline
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
-from xgboost import XGBClassifier  # type: ignore
+from xgboost import XGBClassifier
 
 
 __all__ = ["tune_models"]
@@ -15,21 +15,21 @@ def _param_grids() -> Dict[str, Dict[str, list[Any]]]:
     """Define parameter grids for each estimator."""
     grids: Dict[str, Dict[str, list[Any]]] = {
         "Decision Tree": {
-            "estimator__max_depth": [None, 4, 6, 8],
-            "estimator__min_samples_split": [2, 5, 10],
+            "estimator__max_depth": [None, 2, 3, 4, 5],
+            "estimator__min_samples_split": [2, 3, 4],
         },
-        "Random Forest": {
-            "estimator__n_estimators": [100, 200, 400],
-            "estimator__max_depth": [None, 6, 10],
+       "Random Forest": {
+            "estimator__n_estimators": [ 435, 436, 437, 438, 440],
+            "estimator__max_depth": [None, 2, 3, 4],
         },
         "AdaBoost": {
-            "estimator__n_estimators": [50, 200, 400],
-            "estimator__learning_rate": [0.1, 0.5, 1.0],
+            "estimator__n_estimators": [ 444, 445, 446, 450],
+            "estimator__learning_rate": [ 0.1, 0.5, 0.6, 0.7, 0.8],
         },
          "XGBoost": {
-            "estimator__n_estimators": [100, 300],
-            "estimator__max_depth": [3, 6, 10],
-            "estimator__learning_rate": [0.05, 0.1, 0.2],
+            "estimator__n_estimators": [169, 170, 171, 172],
+            "estimator__max_depth": [2, 3, 4, 5],
+            "estimator__learning_rate": [ 0.09, 0.1, 0.11],
         }
     }
     return grids
@@ -49,7 +49,7 @@ def tune_models(
     preprocessor: Pipeline,
     X_train,
     y_train,
-    cv: int = 5,
+    cv: int = 10,
     scoring: str = "accuracy",
 ) -> Tuple[Dict[str, Pipeline], pd.DataFrame]:
     """Tune hyperparameters for each model and return best pipelines """
