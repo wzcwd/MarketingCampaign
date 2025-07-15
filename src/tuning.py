@@ -16,20 +16,20 @@ def _param_grids() -> Dict[str, Dict[str, list[Any]]]:
     grids: Dict[str, Dict[str, list[Any]]] = {
         "Decision Tree": {
             "estimator__max_depth": [None, 2, 3, 4, 5],
-            "estimator__min_samples_split": [2, 3, 4],
+            "estimator__min_samples_split": [2, 3, 4, 5],
         },
        "Random Forest": {
-            "estimator__n_estimators": [ 435, 436, 437, 438, 440],
-            "estimator__max_depth": [None, 2, 3, 4],
+            "estimator__n_estimators": [ 422, 423, 424, 425, 426, 430],
+            "estimator__max_depth": [None, 2, 3, 4, 5],
         },
         "AdaBoost": {
-            "estimator__n_estimators": [ 444, 445, 446, 450],
-            "estimator__learning_rate": [ 0.1, 0.5, 0.6, 0.7, 0.8],
+            "estimator__n_estimators": [419, 420, 421, 438, 442],
+            "estimator__learning_rate": [ 0.2, 0.3, 0.4, 0.5, 0.6, 0.7],
         },
          "XGBoost": {
-            "estimator__n_estimators": [169, 170, 171, 172],
-            "estimator__max_depth": [2, 3, 4, 5],
-            "estimator__learning_rate": [ 0.09, 0.1, 0.11],
+            "estimator__n_estimators": [160, 165, 167, 168, 169],
+            "estimator__max_depth": [2, 3, 4, 5, 6],
+            "estimator__learning_rate": [0.07, 0.08, 0.09, 0.1, 0.2],
         }
     }
     return grids

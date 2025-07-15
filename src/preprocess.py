@@ -16,9 +16,16 @@ def load_data(path: str) -> pd.DataFrame:
 def make_preprocessor(df: pd.DataFrame, target_col: str) -> Tuple[Pipeline, pd.DataFrame, pd.Series]:
     """Return a preprocessing pipeline plus feature matrix X and target vector y."""
 
-    # split X and y
-    y = df[target_col] # target vector
-    X = df.drop(columns=[target_col]) # feature matrix
+    # split X and y, and exclude any customer identifier column from X
+    y = df[target_col]  # target vector
+
+    # Determine columns to exclude
+    exclude_cols = [target_col]
+    for col in ("ID",):
+        if col in df.columns:
+            exclude_cols.append(col)
+
+    X = df.drop(columns=exclude_cols)  # feature matrix without ID columns
 
     # Detect column types
     num_cols = X.select_dtypes(include=["int64", "float64"]).columns.tolist()
@@ -48,7 +55,8 @@ def make_preprocessor(df: pd.DataFrame, target_col: str) -> Tuple[Pipeline, pd.D
         transformers=[
             ("number", numeric_pipe, num_cols),
             ("category", categorical_pipe, cat_cols),
-        ]
+        ],
+        verbose_feature_names_out=False  
     )
 
     return preprocessor, X, y
