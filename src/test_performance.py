@@ -1,8 +1,4 @@
-"""Evaluate trained classification models on a test set.
-
-Returns a pandas DataFrame with Accuracy, Precision, Recall, F1 and ROC-AUC (if available)
-plus a dict of confusion matrices for further use/visualisation.
-"""
+"""Evaluate trained classification models on a test set"""
 from typing import Dict, Tuple
 import pandas as pd
 from sklearn.metrics import (

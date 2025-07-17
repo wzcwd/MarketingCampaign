@@ -21,15 +21,8 @@ def main() -> None:
     # 3) Train-test split
     X_train, X_test, y_train, y_test = split_train_test(X, y)
 
-    # print("Train shape:", X_train.shape, y_train.shape) # Train shape: (1792, 28) (1792,)
-    # print("Test  shape:", X_test.shape, y_test.shape) # Test  shape: (448, 28) (448,)
-
     # 4) Baseline training
     trained = train_models(preprocessor, X_train, y_train)
-    # for model_name, estimator in trained.items():
-    #     y_pred = estimator.predict(X_test)
-    #     acc = accuracy_score(y_test, y_pred)
-    #     print(f"{model_name:15s}  Accuracy: {acc:.4f}")
 
     # 5) Hyper-parameter tuning
     tuned, cv_summary = tune_models(preprocessor, X_train, y_train)
@@ -68,13 +61,7 @@ def main() -> None:
 
     # 8. Generate ROC curves for final models
     final_models = {**trained_final, **tuned_final}
-    plot_roc_curves(
-        final_models,
-        X_test,
-        y_test,
-        out_path=result_roc,
-        title="ROC Curves",
-    )
+    plot_roc_curves(final_models, X_test,y_test,out_path=result_roc,title="ROC Curves",)
 
     # 9. Feature-importance
     # Print feature-importance table

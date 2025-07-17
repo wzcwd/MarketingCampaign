@@ -1,6 +1,3 @@
-# src/roc_curve.py
-"""Utility functions for common model visualisations."""
-
 from typing import Mapping
 import os
 import matplotlib.pyplot as plt
