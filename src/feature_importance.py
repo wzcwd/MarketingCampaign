@@ -11,8 +11,13 @@ def feature_importance(
         trained_models: Dict[str, Any],
         preprocessor,
         out_dir: str,
-        top_n: int = 10,) -> None:
-    """Generate and save feature-importance plots"""
+        top_n: int = 5,
+        verbose: bool = False,) -> None:
+    """Generate and save feature-importance plots.
+
+    If *verbose* is True, also print the full feature-importance list for each model
+    to the console, sorted by descending importance.
+    """
 
     try:
         feature_names = preprocessor.get_feature_names_out()
@@ -35,6 +40,12 @@ def feature_importance(
         idx_sorted = np.argsort(importance)[-top_n:][::-1]
         top_features = np.array(feature_names)[idx_sorted]
         top_scores = importance[idx_sorted]
+
+        if verbose:
+            # Print the top-N features
+            print(f"\n=== {name} — Top {top_n} features ===")
+            for feat, score in zip(top_features, top_scores):
+                print(f"{feat:<30s} {score:.4f}")
 
         # Generate images
         plt.figure(figsize=(6, 4))

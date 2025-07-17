@@ -4,14 +4,12 @@ from train_models import train_models
 from test_performance import evaluate_models
 from feature_importance import feature_importance
 from tuning import tune_models
-from sklearn.metrics import RocCurveDisplay
-import matplotlib.pyplot as plt
-import os
+from roc_curve import plot_roc_curves
 
 DATA_PATH = "../data/marketing_campaign.csv"
 TARGET_COL = "Response"
 result_feature = "../results/feature_importance"
-result_roc = "../results/roc"
+result_roc = "../results/roc/roc_final.png"
 
 def main() -> None:
     # 1) Load dataset
@@ -68,32 +66,22 @@ def main() -> None:
     for name, cm in cm_final_tuned.items():
         print(f"\n{name}:\n{cm}")
 
-    # 8. ROC curves for final models
-    fig, ax = plt.subplots(figsize=(6, 6))
-
+    # 8. Generate ROC curves for final models
     final_models = {**trained_final, **tuned_final}
-    for model_name, pipe in final_models.items():
-        if hasattr(pipe, "predict_proba"):
-            y_score = pipe.predict_proba(X_test)[:, 1]
-        else:
-            # fall back to decision_function if available
-            y_score = pipe.decision_function(X_test)
+    plot_roc_curves(
+        final_models,
+        X_test,
+        y_test,
+        out_path=result_roc,
+        title="ROC Curves",
+    )
 
-        RocCurveDisplay.from_predictions(
-            y_test,
-            y_score,
-            name=model_name,
-            ax=ax,
-        )
+    # 9. Feature-importance
+    # Print feature-importance table
+    feature_importance(trained_final, preprocessor, out_dir=result_feature, verbose=True)
+    feature_importance(tuned_final, preprocessor, out_dir=result_feature, verbose=True)
 
-    ax.plot([0, 1], [0, 1], "--", color="gray")
-    ax.set_title("ROC Curves — Final Models")
-    plt.tight_layout()
-    plt.savefig(os.path.join(result_roc, "roc_final_models.png"))
-    plt.close()
-
-    # 8. Feature-importance plots
-    # Plot feature importance only for the final selected models
+    # Plot feature importance  for the final selected models
     feature_importance(trained_final, preprocessor, result_feature)
     feature_importance(tuned_final, preprocessor, result_feature)
     print("\nFeature-importance plots saved")
