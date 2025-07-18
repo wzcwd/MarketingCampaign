@@ -8,7 +8,6 @@ from roc_curve import plot_roc_curves
 
 DATA_PATH = "../data/marketing_campaign.csv"
 TARGET_COL = "Response"
-result_feature = "../results/feature_importance"
 result_roc = "../results/roc/roc_final.png"
 
 def main() -> None:
@@ -63,16 +62,9 @@ def main() -> None:
     final_models = {**trained_final, **tuned_final}
     plot_roc_curves(final_models, X_test,y_test,out_path=result_roc,title="ROC Curves",)
 
-    # 9. Feature-importance
-    # Print feature-importance table
-    feature_importance(trained_final, preprocessor, out_dir=result_feature, verbose=True)
-    feature_importance(tuned_final, preprocessor, out_dir=result_feature, verbose=True)
-
-    # Plot feature importance  for the final selected models
-    feature_importance(trained_final, preprocessor, result_feature)
-    feature_importance(tuned_final, preprocessor, result_feature)
-    print("\nFeature-importance plots saved")
-
+    # 9. Print Feature-importance table
+    feature_importance(trained_final, preprocessor, top_n=5)
+    feature_importance(tuned_final, preprocessor, top_n=5)
 
 if __name__ == "__main__":
     main()

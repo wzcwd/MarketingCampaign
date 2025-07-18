@@ -31,7 +31,7 @@ This project follows a standard machine learning pipeline to build the model
 2.  **Model Training**: Trains 4 out-of-the-box classification models (Decision Tree, Random Forest, AdaBoost, XGBoost) to predict target customers.
 3.  **Hyperparameter Tuning**: Utilizes `GridSearchCV` to find the optimal hyperparameters for each model, aiming to improve their predictive power.
 4.  **Performance Evaluation**: Compares the tuned models against the baseline models on a  testing set using various metrics (Accuracy, Precision, Recall, F1-Score, ROC AUC).
-5.  **Feature Importance for Interpretability**: Extracts and visualizes the most influential features from the best-performing models. This provides insights into the characteristics of target customers.
+5.  **Feature Importance for Interpretability**: Extracts the most influential features from the best-performing models. This provides insights into the characteristics of target customers.
 
 ## 4. Run the project
 
@@ -41,8 +41,8 @@ This project follows a standard machine learning pipeline to build the model
     python src/main.py
     ```
 3.  **Check the results:**
-    -   Performance metrics will be printed to the console.
-    -   Feature importance plots for baseline and tuned models will be saved in the `results/baseline` and `results/tuned` directories, respectively.
+    -   Performance metrics and feature importance table will be printed to the console.
+    -   Roc curve will be saved in the `results/roc` directory.
 
 ## 5. Dataset
 
@@ -76,3 +76,20 @@ The dataset contains information from the pilot marketing campaign.
 -   **`NumWebPurchases`**: Number of purchases made through company’s web site
 -   **`NumWebVisitsMonth`**: Number of visits to company’s web site in the last month
 -   **`Recency`**: Number of days since the last purchase
+
+
+## 6. Model Performance Comparison
+
+The following table summarizes the test-set performance of the four models across key metrics:
+
+| Model         | Accuracy | Precision | Recall | F1    | ROC AUC |
+|---------------|----------|-----------|--------|-------|---------|
+| XGBoost       | 0.888    | 0.730     | 0.403  | 0.519 | 0.889   |
+| Random Forest | 0.882    | 0.850     | 0.254  | 0.391 | 0.875   |
+| AdaBoost      | 0.882    | 0.733     | 0.328  | 0.454 | 0.880   |
+| Decision Tree | 0.866    | 0.613     | 0.284  | 0.388 | 0.759   |
+
+XGBoost performed best. It has the highest F1 score, which suggests that it properly balance the precision and recall. 
+In other words, it finds the best trade-off between minimizing the marketing cost and maximizing the coverage of 
+targeted customers.
+
