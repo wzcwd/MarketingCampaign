@@ -14,16 +14,16 @@ def main() -> None:
     # 1) Load dataset
     df = load_data(DATA_PATH)
 
-    # 2) Build preprocessing pipeline and split X / y
+    # 2) Data preprocessing
     preprocessor, X, y = make_preprocessor(df, TARGET_COL)
 
-    # 3) Train-test split
+    # 3) Split data into train and test sets: 20% for test set
     X_train, X_test, y_train, y_test = split_train_test(X, y)
 
     # 4) Baseline training
     trained = train_models(preprocessor, X_train, y_train)
 
-    # 5) Hyper-parameter tuning
+    # 5) Hyperparameter tuning
     tuned, cv_summary = tune_models(preprocessor, X_train, y_train)
     print("\nGridSearchCV summary (best CV accuracy):")
     print(cv_summary.to_string(index=False, float_format="{:.3f}".format))
